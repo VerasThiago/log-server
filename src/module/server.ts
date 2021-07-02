@@ -3,7 +3,7 @@ import Router from 'koa-router'
 import asyncRetry from 'async-retry'
 import getPort from 'get-port'
 import { Server } from 'http'
-import { userHandler, secretHandler } from './handlers'
+import { logsHandler } from './handlers'
 
 export class WebServer {
   private app: Koa
@@ -17,9 +17,7 @@ export class WebServer {
   }
 
   private async setRoutes() {
-    this.router.get('/user', userHandler)
-
-    this.router.get('/secret', secretHandler)
+    this.router.post('/logs', logsHandler)
 
     this.router.get('/(.*)', (ctx) => {
       ctx.body = 'Default route!'
