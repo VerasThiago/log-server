@@ -18,7 +18,7 @@ docker run -p 3000:3000 verasthiago/log-server
 ```
 POST HOST.IP:3000/logs
 
-data: Record<string, string>
+data: Record<string, any>
 ```
 
 Example:
@@ -35,13 +35,11 @@ POST HOST.IP:3000/proxy
 
 data:
   {
-    "baseURL": "http://localhost:3000/",
-    "path": "/logs",
-    "method": "post",
-    "data": {
-      "message":  "success",
-      "test": "test"
-    }
+    "baseURL": string,
+    "path": string,
+    "method": string,
+    "data": Record<string, any>
+    "enableHost": boolean
   }
 ```
 
@@ -56,7 +54,8 @@ curl --location --request POST 'localhost:3000/proxy' \
     "method": "post",
     "data": {
       "message":  "success",
-      "TESTANDO": "1q41f2jfwe"
-    }
+      "test": "hello world"
+    },
+    "enableHost": true
 }'
 ```
