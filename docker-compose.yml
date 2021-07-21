@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+  log-server:
+    image : verasthiago/log-server
+    build: .
+    ports:
+      - 3000:3000
+    expose: 
+        - 3000

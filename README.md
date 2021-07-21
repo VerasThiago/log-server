@@ -35,11 +35,17 @@ POST HOST.IP:3000/proxy
 
 data:
   {
-    "baseURL": string,
-    "path": string,
-    "method": string,
-    "data": Record<string, any>
-    "enableHost": boolean
+    baseURL: string
+    path: string
+    method: Method
+    data?: Record<string, string>
+    log?: {
+      host?: {
+        ip?: boolean
+        name?: boolean
+        family?: string
+      }
+    }
   }
 ```
 
@@ -49,13 +55,41 @@ Example:
 curl --location --request POST 'localhost:3000/proxy' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "baseURL": "http://localhost:3000/",
+    "baseURL": "http://log-server:3000/",
     "path": "/logs",
     "method": "post",
     "data": {
       "message":  "success",
-      "test": "hello world"
+      "message2": "sucess2"
     },
-    "enableHost": true
+    "log": {
+        "host":{
+            "ip": true,
+            "family": "IPv4",
+            "name": true
+        }
+    }
+}'
+```
+
+#### IP
+Get current IP by specific network family (defaults to IPv4)
+
+```
+POST HOST.IP:3000/ip
+
+data: 
+  {
+    family?: string    
+  }
+```
+
+Example:
+
+```
+curl --location --request POST 'localhost:3000/ip' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "family": "IPv6"
 }'
 ```

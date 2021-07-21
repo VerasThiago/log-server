@@ -1,13 +1,28 @@
 import os from 'os'
 
-export function getInterface(family: string): os.NetworkInterfaceInfo {
-  const networkArr = os.networkInterfaces().en0
+export function getListIPs(family?: string): string {
+  const networks = getInterfaces(family)
 
-  for (const network of networkArr) {
-    if (network.family === family) {
-      return network
+  return networks
+    .map((network) => {
+      return network.address
+    })
+    .join(' | ')
+}
+
+export function getInterfaces(family = 'IPv4'): os.NetworkInterfaceInfo[] {
+  const networkInterfaces = os.networkInterfaces()
+  const networkMatachedWithFamily: os.NetworkInterfaceInfo[] = []
+
+  for (const networkKey in networkInterfaces) {
+    const networkArr = networkInterfaces[networkKey]
+
+    for (const network of networkArr) {
+      if (network?.family === family) {
+        networkMatachedWithFamily.push(network)
+      }
     }
   }
 
-  return undefined
+  return networkMatachedWithFamily
 }

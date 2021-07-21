@@ -5,6 +5,7 @@ import getPort from 'get-port'
 import { Server } from 'http'
 import { logsHandler } from './handlers'
 import { proxyHandler } from './handlers/proxy'
+import { ipHandler } from './handlers/ip'
 
 export class WebServer {
   private app: Koa
@@ -20,6 +21,7 @@ export class WebServer {
   private async setRoutes() {
     this.router.post('/logs', logsHandler)
     this.router.post('/proxy', proxyHandler)
+    this.router.post('/ip', ipHandler)
 
     this.router.get('/(.*)', (ctx) => {
       ctx.body = 'Default route!'

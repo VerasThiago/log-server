@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import coBody from 'co-body'
 import axios from 'axios'
-import { getInterface } from '../utils'
+import { getListIPs } from '../utils'
 import os from 'os'
 
 type Method =
@@ -31,15 +31,24 @@ interface Data {
   path: string
   method: Method
   data?: Record<string, string>
-  enableHost?: boolean
+  log?: {
+    host?: {
+      ip?: boolean
+      name?: boolean
+      family?: string
+    }
+  }
 }
 
 export async function proxyHandler(ctx: Koa.ParameterizedContext) {
   try {
     const body: Data = await coBody(ctx.req)
 
-    if (body.enableHost) {
-      body.data['log-server-host-ip'] = getInterface('IPv4').address
+    if (body.log?.host?.ip) {
+      body.data['log-server-host-ip'] = getListIPs()
+    }
+
+    if (body.log?.host?.name) {
       body.data['log-server-host-name'] = os.hostname()
     }
 
